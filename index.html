@@ -186,6 +186,7 @@
       <a href="#why">Why xAPI</a>
       <a href="#appliance">Inquiry Appliance</a>
       <a href="#flows">How it works</a>
+      <a href="#integrations">Atlas &amp; iNQspace</a>
       <a href="#spec">Specification</a>
     </nav>
   </header>
@@ -289,6 +290,23 @@ sequenceDiagram
       </section>
     </section>
 
+    <section id="integrations" class="wrap">
+      <span class="pill">Product integrations</span>
+      <h2>Atlas, iNQspace, and Codespaces</h2>
+      <p>
+        <strong>Atlas</strong> (curriculum shell) and <strong>iNQspace</strong> (GitHub Classroom–style assignments) are first-class
+        <strong>producers</strong> in the Castalia event registry—same gateway contract, one vocabulary for modules, notebooks, assessments, and inquiry evidence.
+      </p>
+      <p>
+        <strong>GitHub Codespaces</strong> is the delivery runtime where many cohorts edit, run notebooks, and open pull requests; it is not a separate product, but statements can carry
+        <code>delivery_environment</code> context so analytics distinguish laptop vs cloud dev environments.
+      </p>
+      <p class="cta">
+        <a href="https://github.com/InquiryInstitute/xapi/blob/main/docs/INTEGRATIONS.md">Client integrations guide</a>
+        (env vars, alignment with iNQspace’s LRS pipeline, Codespaces notes)
+      </p>
+    </section>
+
     <section id="spec" class="wrap">
       <span class="pill">Build on it</span>
       <h2>Specification and registry</h2>
@@ -298,6 +316,8 @@ sequenceDiagram
       </p>
       <p class="cta">
         <a href="https://github.com/InquiryInstitute/xapi/blob/main/docs/CASTALIA_XAPI_SYSTEM_SPEC_v0.1.md">Castalia xAPI System Specification v0.1</a>
+        ·
+        <a href="https://github.com/InquiryInstitute/xapi/blob/main/docs/INTEGRATIONS.md">Integrations</a>
         ·
         <a href="https://github.com/InquiryInstitute/xapi/blob/main/docs/event-registry/v1/registry.json">Event registry (JSON)</a>
         ·

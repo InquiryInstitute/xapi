@@ -486,6 +486,8 @@ Targets (refine per environment):
 
 **Supporting files:** [`docs/event-registry/README.md`](event-registry/README.md) (index and rules), [`docs/event-registry/v1/registry-entry.schema.json`](event-registry/v1/registry-entry.schema.json) (validation), [`docs/event-registry/v1/examples.md`](event-registry/v1/examples.md) (worked examples).
 
+**Client integrations (*Informative*):** [`docs/INTEGRATIONS.md`](INTEGRATIONS.md) — how **Atlas**, **iNQspace**, and **GitHub Codespaces** align with the gateway and registry.
+
 Producers **must not** emit domain events outside this registry for conforming builds (see [§1](#1-purpose-and-conformance)).
 
 ---
@@ -495,3 +497,4 @@ Producers **must not** emit domain events outside this registry for conforming b
 | Version | Date | Notes |
 |---------|------|--------|
 | 0.1 | 2026-03-29 | Initial spec + design review; event registry v1 (20 events) + examples |
+| 0.1 | 2026-03-29 | [`INTEGRATIONS.md`](INTEGRATIONS.md): Atlas, iNQspace, Codespaces |

@@ -7,6 +7,7 @@ Machine-readable registry of **canonical** `castalia.*` domain events, aligned w
 | [`v1/registry.json`](v1/registry.json) | **Source of truth** — 20 events with internal field contracts and xAPI mapping |
 | [`v1/registry-entry.schema.json`](v1/registry-entry.schema.json) | JSON Schema for each event object (SDK / CI validation) |
 | [`v1/examples.md`](v1/examples.md) | End-to-end internal event → xAPI statement examples |
+| [`../INTEGRATIONS.md`](../INTEGRATIONS.md) | Atlas, iNQspace, and Codespaces integration with this registry |
 
 ## Rules
 
