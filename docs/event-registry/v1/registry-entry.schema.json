@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://castalia.institute/xapi/event-registry/v1/registry-entry.schema.json",
+  "title": "Castalia event registry entry",
+  "type": "object",
+  "required": [
+    "event_type",
+    "version",
+    "title",
+    "description",
+    "producers",
+    "internal_event",
+    "xapi_mapping"
+  ],
+  "properties": {
+    "event_type": {
+      "type": "string",
+      "pattern": "^castalia\\.[a-z0-9._]+$"
+    },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+$" },
+    "title": { "type": "string", "minLength": 1 },
+    "description": { "type": "string", "minLength": 1 },
+    "producers": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "internal_event": {
+      "type": "object",
+      "required": ["required_context", "required_payload"],
+      "properties": {
+        "required_context": { "type": "array", "items": { "type": "string" } },
+        "optional_context": { "type": "array", "items": { "type": "string" } },
+        "required_payload": { "type": "array", "items": { "type": "string" } },
+        "optional_payload": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "xapi_mapping": {
+      "type": "object",
+      "required": ["verb", "activity_type", "activity_id_template"],
+      "properties": {
+        "verb": { "type": "string", "format": "uri" },
+        "activity_type": { "type": "string", "format": "uri" },
+        "activity_id_template": { "type": "string", "minLength": 1 },
+        "result_required": { "type": "array", "items": { "type": "string" } },
+        "context_extension_keys": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "notes": { "type": "string" }
+  },
+  "additionalProperties": false
+}

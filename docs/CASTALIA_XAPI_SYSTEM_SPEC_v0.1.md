@@ -27,6 +27,7 @@ This document is **normative** for Castalia’s xAPI-related architecture. Secti
 15. [Non-functional requirements](#15-non-functional-requirements)
 16. [Roadmap (*Informative*)](#16-roadmap-informative)
 17. [Strategic assessment (*Informative*)](#17-strategic-assessment-informative)
+18. [Event registry](#18-event-registry)
 
 ---
 
@@ -450,7 +451,9 @@ Targets (refine per environment):
 
 ## 16. Roadmap (*Informative*)
 
-**Recommended next design deliverable:** **Atlas Event Registry** with **20 canonical events**, each mapped to xAPI and shared across iNQspace, Atlas, and card flows. That step forces semantic discipline and de-risks downstream gateway, LRS, and credential work.
+**Delivered (v0.1):** Canonical **event registry v1** — see [§18](#18-event-registry).
+
+**Next (recommended):** Producer SDKs with compile-time validation against the registry; pinned **xAPI profile** (verbs, types, extensions); gateway contract tests; read-model projections keyed by `event_type`.
 
 ---
 
@@ -473,8 +476,22 @@ Targets (refine per environment):
 
 ---
 
+## 18. Event registry
+
+**Normative data:** [`docs/event-registry/v1/registry.json`](event-registry/v1/registry.json) lists **20** canonical `castalia.*` events with:
+
+- required / optional **internal** `context` and `payload` keys  
+- **xAPI** verb, activity type, and `activity_id_template`  
+- producer attribution (`inqspace`, `atlas`, `samwise`, `dialogic`, `inq_cards`, `device`, `field`, `gateway`, …)  
+
+**Supporting files:** [`docs/event-registry/README.md`](event-registry/README.md) (index and rules), [`docs/event-registry/v1/registry-entry.schema.json`](event-registry/v1/registry-entry.schema.json) (validation), [`docs/event-registry/v1/examples.md`](event-registry/v1/examples.md) (worked examples).
+
+Producers **must not** emit domain events outside this registry for conforming builds (see [§1](#1-purpose-and-conformance)).
+
+---
+
 ## Document history
 
 | Version | Date | Notes |
 |---------|------|--------|
-| 0.1 | 2026-03-29 | Initial integrated spec + design review |
+| 0.1 | 2026-03-29 | Initial spec + design review; event registry v1 (20 events) + examples |

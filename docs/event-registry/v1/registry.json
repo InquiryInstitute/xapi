@@ -1,0 +1,398 @@
+{
+  "registry_version": "1.0",
+  "spec_reference": "docs/CASTALIA_XAPI_SYSTEM_SPEC_v0.1.md",
+  "namespace": "castalia",
+  "iri_base": {
+    "activity_type": "https://castalia.institute/xapi/activity-types/",
+    "activity": "https://castalia.institute/xapi/activities/",
+    "extension": "https://castalia.institute/xapi/extensions/"
+  },
+  "events": [
+    {
+      "event_type": "castalia.inqspace.notebook.cell_executed",
+      "version": "1.0",
+      "title": "Notebook cell executed",
+      "description": "A code or markdown cell ran to completion or failure in an iNQspace notebook.",
+      "producers": ["inqspace", "atlas"],
+      "internal_event": {
+        "required_context": ["notebook_id", "session_id"],
+        "optional_context": ["course_id", "module_id"],
+        "required_payload": ["cell_id"],
+        "optional_payload": ["language", "kernel_id", "execution_ms", "success", "error_code"]
+      },
+      "xapi_mapping": {
+        "verb": "http://adlnet.gov/expapi/verbs/interacted",
+        "activity_type": "https://castalia.institute/xapi/activity-types/notebook-cell",
+        "activity_id_template": "https://castalia.institute/xapi/activities/notebook/{notebook_id}/cell/{cell_id}",
+        "context_extension_keys": ["castalia_event_type", "notebook_id", "session_id"],
+        "result_required": ["success"]
+      }
+    },
+    {
+      "event_type": "castalia.inqspace.notebook.kernel_ready",
+      "version": "1.0",
+      "title": "Notebook kernel ready",
+      "description": "Compute kernel for a notebook session became ready for execution.",
+      "producers": ["inqspace"],
+      "internal_event": {
+        "required_context": ["notebook_id", "session_id"],
+        "optional_context": ["course_id"],
+        "required_payload": ["kernel_id"],
+        "optional_payload": ["language", "startup_ms"]
+      },
+      "xapi_mapping": {
+        "verb": "http://adlnet.gov/expapi/verbs/initialized",
+        "activity_type": "https://castalia.institute/xapi/activity-types/notebook-kernel",
+        "activity_id_template": "https://castalia.institute/xapi/activities/notebook/{notebook_id}/kernel/{kernel_id}",
+        "context_extension_keys": ["castalia_event_type", "notebook_id", "session_id"]
+      }
+    },
+    {
+      "event_type": "castalia.atlas.module.started",
+      "version": "1.0",
+      "title": "Learning module started",
+      "description": "Learner began a structured module or lesson sequence in Atlas.",
+      "producers": ["atlas"],
+      "internal_event": {
+        "required_context": ["module_id", "registration_id"],
+        "optional_context": ["pathway_id", "cohort_id"],
+        "required_payload": [],
+        "optional_payload": ["attempt", "entry_point"]
+      },
+      "xapi_mapping": {
+        "verb": "http://adlnet.gov/expapi/verbs/initialized",
+        "activity_type": "https://castalia.institute/xapi/activity-types/learning-module",
+        "activity_id_template": "https://castalia.institute/xapi/activities/module/{module_id}",
+        "context_extension_keys": ["castalia_event_type", "registration_id"]
+      }
+    },
+    {
+      "event_type": "castalia.atlas.module.completed",
+      "version": "1.0",
+      "title": "Learning module completed",
+      "description": "Learner satisfied completion criteria for a module.",
+      "producers": ["atlas"],
+      "internal_event": {
+        "required_context": ["module_id", "registration_id"],
+        "optional_context": ["pathway_id"],
+        "required_payload": [],
+        "optional_payload": ["score", "success", "duration_ms"]
+      },
+      "xapi_mapping": {
+        "verb": "http://adlnet.gov/expapi/verbs/completed",
+        "activity_type": "https://castalia.institute/xapi/activity-types/learning-module",
+        "activity_id_template": "https://castalia.institute/xapi/activities/module/{module_id}",
+        "context_extension_keys": ["castalia_event_type", "registration_id"],
+        "result_required": ["completion"]
+      }
+    },
+    {
+      "event_type": "castalia.atlas.resource.accessed",
+      "version": "1.0",
+      "title": "Learning resource accessed",
+      "description": "Learner opened or streamed a resource (reading, video, sim, file).",
+      "producers": ["atlas"],
+      "internal_event": {
+        "required_context": ["resource_id", "registration_id"],
+        "optional_context": ["module_id"],
+        "required_payload": [],
+        "optional_payload": ["mime_type", "duration_ms"]
+      },
+      "xapi_mapping": {
+        "verb": "http://adlnet.gov/expapi/verbs/experienced",
+        "activity_type": "https://castalia.institute/xapi/activity-types/learning-resource",
+        "activity_id_template": "https://castalia.institute/xapi/activities/resource/{resource_id}",
+        "context_extension_keys": ["castalia_event_type", "registration_id"]
+      }
+    },
+    {
+      "event_type": "castalia.atlas.assessment.attempt_submitted",
+      "version": "1.0",
+      "title": "Assessment attempt submitted",
+      "description": "Learner submitted an attempt for a graded assessment.",
+      "producers": ["atlas"],
+      "internal_event": {
+        "required_context": ["assessment_id", "registration_id"],
+        "optional_context": ["module_id"],
+        "required_payload": ["attempt_id"],
+        "optional_payload": ["item_count", "time_limit_ms"]
+      },
+      "xapi_mapping": {
+        "verb": "http://adlnet.gov/expapi/verbs/answered",
+        "activity_type": "https://castalia.institute/xapi/activity-types/assessment",
+        "activity_id_template": "https://castalia.institute/xapi/activities/assessment/{assessment_id}",
+        "context_extension_keys": ["castalia_event_type", "registration_id", "attempt_id"]
+      }
+    },
+    {
+      "event_type": "castalia.atlas.assessment.scored",
+      "version": "1.0",
+      "title": "Assessment scored",
+      "description": "System recorded a score or outcome for an assessment attempt.",
+      "producers": ["atlas"],
+      "internal_event": {
+        "required_context": ["assessment_id", "registration_id", "attempt_id"],
+        "optional_context": ["module_id"],
+        "required_payload": ["score_min", "score_max", "score_raw"],
+        "optional_payload": ["passed", "graded_at"]
+      },
+      "xapi_mapping": {
+        "verb": "http://adlnet.gov/expapi/verbs/completed",
+        "activity_type": "https://castalia.institute/xapi/activity-types/assessment",
+        "activity_id_template": "https://castalia.institute/xapi/activities/assessment/{assessment_id}",
+        "context_extension_keys": ["castalia_event_type", "registration_id", "attempt_id"],
+        "result_required": ["score", "success"]
+      },
+      "notes": "Scoring event: use result.score (scaled or raw per profile) and result.success; verb is ADL completed to maximize LRS interoperability."
+    },
+    {
+      "event_type": "castalia.dialogic.session.started",
+      "version": "1.0",
+      "title": "Dialogic session started",
+      "description": "SAMWISE / Dialogic conversational session began.",
+      "producers": ["samwise", "dialogic"],
+      "internal_event": {
+        "required_context": ["dialogic_session_id", "registration_id"],
+        "optional_context": ["scenario_id", "locale"],
+        "required_payload": [],
+        "optional_payload": ["model_id", "prompt_pack_id"]
+      },
+      "xapi_mapping": {
+        "verb": "http://adlnet.gov/expapi/verbs/initialized",
+        "activity_type": "https://castalia.institute/xapi/activity-types/dialogic-session",
+        "activity_id_template": "https://castalia.institute/xapi/activities/dialogic/{dialogic_session_id}",
+        "context_extension_keys": ["castalia_event_type", "registration_id"]
+      }
+    },
+    {
+      "event_type": "castalia.dialogic.session.ended",
+      "version": "1.0",
+      "title": "Dialogic session ended",
+      "description": "Dialogic session closed normally or by policy.",
+      "producers": ["samwise", "dialogic"],
+      "internal_event": {
+        "required_context": ["dialogic_session_id", "registration_id"],
+        "optional_context": ["scenario_id"],
+        "required_payload": [],
+        "optional_payload": ["turn_count", "duration_ms", "end_reason"]
+      },
+      "xapi_mapping": {
+        "verb": "http://adlnet.gov/expapi/verbs/terminated",
+        "activity_type": "https://castalia.institute/xapi/activity-types/dialogic-session",
+        "activity_id_template": "https://castalia.institute/xapi/activities/dialogic/{dialogic_session_id}",
+        "context_extension_keys": ["castalia_event_type", "registration_id"]
+      },
+      "notes": "Session end: use result extensions for turn_count, duration_ms, end_reason where applicable."
+    },
+    {
+      "event_type": "castalia.dialogic.turn.submitted",
+      "version": "1.0",
+      "title": "Dialogic turn submitted",
+      "description": "Learner or agent submitted one turn in a dialogic exchange.",
+      "producers": ["samwise", "dialogic"],
+      "internal_event": {
+        "required_context": ["dialogic_session_id", "registration_id"],
+        "optional_context": ["scenario_id"],
+        "required_payload": ["turn_id", "role"],
+        "optional_payload": ["token_count", "latency_ms"]
+      },
+      "xapi_mapping": {
+        "verb": "http://adlnet.gov/expapi/verbs/answered",
+        "activity_type": "https://castalia.institute/xapi/activity-types/dialogic-turn",
+        "activity_id_template": "https://castalia.institute/xapi/activities/dialogic/{dialogic_session_id}/turn/{turn_id}",
+        "context_extension_keys": ["castalia_event_type", "registration_id", "role"]
+      },
+      "notes": "Store raw text only in approved privacy mode; prefer hashes or redacted summaries in extensions."
+    },
+    {
+      "event_type": "castalia.inq.card.presented",
+      "version": "1.0",
+      "title": "Inquiry card presented",
+      "description": "An iNQ card was shown to the learner in a deck or flow.",
+      "producers": ["inq_cards", "atlas"],
+      "internal_event": {
+        "required_context": ["card_id", "registration_id"],
+        "optional_context": ["deck_id", "module_id"],
+        "required_payload": [],
+        "optional_payload": ["position", "presentation_mode"]
+      },
+      "xapi_mapping": {
+        "verb": "http://adlnet.gov/expapi/verbs/experienced",
+        "activity_type": "https://castalia.institute/xapi/activity-types/inq-card",
+        "activity_id_template": "https://castalia.institute/xapi/activities/card/{card_id}",
+        "context_extension_keys": ["castalia_event_type", "registration_id"]
+      }
+    },
+    {
+      "event_type": "castalia.inq.card.response_recorded",
+      "version": "1.0",
+      "title": "Inquiry card response recorded",
+      "description": "Learner responded to a card (choice, rating, free text where allowed).",
+      "producers": ["inq_cards", "atlas"],
+      "internal_event": {
+        "required_context": ["card_id", "registration_id"],
+        "optional_context": ["deck_id"],
+        "required_payload": ["response_id"],
+        "optional_payload": ["response_kind", "latency_ms"]
+      },
+      "xapi_mapping": {
+        "verb": "http://adlnet.gov/expapi/verbs/answered",
+        "activity_type": "https://castalia.institute/xapi/activity-types/inq-card",
+        "activity_id_template": "https://castalia.institute/xapi/activities/card/{card_id}",
+        "context_extension_keys": ["castalia_event_type", "registration_id", "response_id"]
+      }
+    },
+    {
+      "event_type": "castalia.inquiry.question.recorded",
+      "version": "1.0",
+      "title": "Inquiry question recorded",
+      "description": "Learner posed or selected a focal research question.",
+      "producers": ["atlas", "inqspace"],
+      "internal_event": {
+        "required_context": ["inquiry_id", "registration_id"],
+        "optional_context": ["module_id"],
+        "required_payload": ["question_id"],
+        "optional_payload": ["question_source"]
+      },
+      "xapi_mapping": {
+        "verb": "http://adlnet.gov/expapi/verbs/asked",
+        "activity_type": "https://castalia.institute/xapi/activity-types/inquiry",
+        "activity_id_template": "https://castalia.institute/xapi/activities/inquiry/{inquiry_id}",
+        "context_extension_keys": ["castalia_event_type", "registration_id", "question_id"]
+      }
+    },
+    {
+      "event_type": "castalia.inquiry.hypothesis.recorded",
+      "version": "1.0",
+      "title": "Hypothesis recorded",
+      "description": "Learner stated a testable hypothesis tied to an inquiry.",
+      "producers": ["atlas", "inqspace"],
+      "internal_event": {
+        "required_context": ["inquiry_id", "registration_id"],
+        "optional_context": ["module_id"],
+        "required_payload": ["hypothesis_id"],
+        "optional_payload": ["revision"]
+      },
+      "xapi_mapping": {
+        "verb": "http://adlnet.gov/expapi/verbs/interacted",
+        "activity_type": "https://castalia.institute/xapi/activity-types/inquiry",
+        "activity_id_template": "https://castalia.institute/xapi/activities/inquiry/{inquiry_id}",
+        "context_extension_keys": ["castalia_event_type", "registration_id", "hypothesis_id"]
+      }
+    },
+    {
+      "event_type": "castalia.inquiry.evidence.linked",
+      "version": "1.0",
+      "title": "Evidence linked to inquiry",
+      "description": "Learner linked evidence (notebook run, resource, observation) to an inquiry thread.",
+      "producers": ["atlas", "inqspace"],
+      "internal_event": {
+        "required_context": ["inquiry_id", "registration_id"],
+        "optional_context": ["module_id"],
+        "required_payload": ["evidence_ref"],
+        "optional_payload": ["evidence_kind", "note"]
+      },
+      "xapi_mapping": {
+        "verb": "http://adlnet.gov/expapi/verbs/interacted",
+        "activity_type": "https://castalia.institute/xapi/activity-types/inquiry",
+        "activity_id_template": "https://castalia.institute/xapi/activities/inquiry/{inquiry_id}",
+        "context_extension_keys": ["castalia_event_type", "registration_id", "evidence_ref"]
+      }
+    },
+    {
+      "event_type": "castalia.device.observation.recorded",
+      "version": "1.0",
+      "title": "Device observation recorded",
+      "description": "Field appliance recorded a sensor or instrument observation.",
+      "producers": ["device", "field"],
+      "internal_event": {
+        "required_context": ["device_id", "node_id", "registration_id"],
+        "optional_context": ["site_id", "campaign_id"],
+        "required_payload": ["observation_id", "instrument_kind"],
+        "optional_payload": ["quantity", "unit", "quality_flag"]
+      },
+      "xapi_mapping": {
+        "verb": "http://adlnet.gov/expapi/verbs/experienced",
+        "activity_type": "https://castalia.institute/xapi/activity-types/field-observation",
+        "activity_id_template": "https://castalia.institute/xapi/activities/observation/{observation_id}",
+        "context_extension_keys": ["castalia_event_type", "device_id", "node_id", "registration_id"]
+      }
+    },
+    {
+      "event_type": "castalia.collaboration.peer_feedback.submitted",
+      "version": "1.0",
+      "title": "Peer feedback submitted",
+      "description": "Learner submitted structured feedback on a peer artifact.",
+      "producers": ["atlas"],
+      "internal_event": {
+        "required_context": ["artifact_id", "registration_id", "reviewer_actor_id"],
+        "optional_context": ["rubric_id"],
+        "required_payload": ["feedback_id"],
+        "optional_payload": ["scores"]
+      },
+      "xapi_mapping": {
+        "verb": "http://adlnet.gov/expapi/verbs/interacted",
+        "activity_type": "https://castalia.institute/xapi/activity-types/peer-artifact",
+        "activity_id_template": "https://castalia.institute/xapi/activities/artifact/{artifact_id}",
+        "context_extension_keys": ["castalia_event_type", "registration_id", "feedback_id"]
+      }
+    },
+    {
+      "event_type": "castalia.learner.reflection.submitted",
+      "version": "1.0",
+      "title": "Reflection submitted",
+      "description": "Learner submitted a reflection prompt response.",
+      "producers": ["atlas", "inqspace"],
+      "internal_event": {
+        "required_context": ["reflection_prompt_id", "registration_id"],
+        "optional_context": ["module_id"],
+        "required_payload": ["submission_id"],
+        "optional_payload": ["word_count"]
+      },
+      "xapi_mapping": {
+        "verb": "http://adlnet.gov/expapi/verbs/answered",
+        "activity_type": "https://castalia.institute/xapi/activity-types/reflection",
+        "activity_id_template": "https://castalia.institute/xapi/activities/reflection/{reflection_prompt_id}",
+        "context_extension_keys": ["castalia_event_type", "registration_id", "submission_id"]
+      }
+    },
+    {
+      "event_type": "castalia.atlas.pathway.milestone_reached",
+      "version": "1.0",
+      "title": "Pathway milestone reached",
+      "description": "Learner reached a defined milestone on a pathway.",
+      "producers": ["atlas"],
+      "internal_event": {
+        "required_context": ["pathway_id", "milestone_id", "registration_id"],
+        "optional_context": ["cohort_id"],
+        "required_payload": [],
+        "optional_payload": ["evidence_summary_ref"]
+      },
+      "xapi_mapping": {
+        "verb": "http://adlnet.gov/expapi/verbs/progressed",
+        "activity_type": "https://castalia.institute/xapi/activity-types/pathway-milestone",
+        "activity_id_template": "https://castalia.institute/xapi/activities/pathway/{pathway_id}/milestone/{milestone_id}",
+        "context_extension_keys": ["castalia_event_type", "registration_id"]
+      }
+    },
+    {
+      "event_type": "castalia.session.registration.recorded",
+      "version": "1.0",
+      "title": "Session registration recorded",
+      "description": "System bound a learner session to an xAPI registration UUID for correlation.",
+      "producers": ["atlas", "inqspace", "gateway"],
+      "internal_event": {
+        "required_context": ["registration_id"],
+        "optional_context": ["course_id", "module_id", "cohort_id"],
+        "required_payload": [],
+        "optional_payload": ["client_id", "appliance_node_id"]
+      },
+      "xapi_mapping": {
+        "verb": "http://adlnet.gov/expapi/verbs/registered",
+        "activity_type": "https://castalia.institute/xapi/activity-types/learning-session",
+        "activity_id_template": "https://castalia.institute/xapi/activities/session/{registration_id}",
+        "context_extension_keys": ["castalia_event_type", "registration_id"]
+      }
+    }
+  ]
+}
