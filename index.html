@@ -3,19 +3,327 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>xAPI</title>
+  <meta name="description" content="Castalia xAPI: profile-governed learning evidence, the Inquiry Appliance for local-first inquiry, and Atlas-ready analytics." />
+  <title>Castalia xAPI — Inquiry Institute</title>
   <style>
-    :root { color-scheme: light dark; font-family: system-ui, sans-serif; }
-    body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 2rem; }
-    main { max-width: 40rem; text-align: center; }
-    h1 { font-size: 1.5rem; font-weight: 600; }
-    p { opacity: 0.85; line-height: 1.6; }
+    :root {
+      color-scheme: light dark;
+      --bg: #f6f4f0;
+      --fg: #1a1814;
+      --muted: rgba(26, 24, 20, 0.72);
+      --accent: #0d5c5c;
+      --accent-soft: rgba(13, 92, 92, 0.12);
+      --border: rgba(26, 24, 20, 0.1);
+      --card: #fffef9;
+      font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #121410;
+        --fg: #f2efe8;
+        --muted: rgba(242, 239, 232, 0.7);
+        --accent: #5ec4c4;
+        --accent-soft: rgba(94, 196, 196, 0.15);
+        --border: rgba(242, 239, 232, 0.12);
+        --card: #1a1c18;
+      }
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.65;
+      font-size: 1.05rem;
+    }
+    .wrap {
+      max-width: 40rem;
+      margin: 0 auto;
+      padding: 0 1.5rem 4rem;
+    }
+    .wrap-wide {
+      max-width: 52rem;
+      margin: 0 auto;
+      padding: 0 1.5rem 4rem;
+    }
+    header {
+      padding: 1.25rem 0 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .brand {
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.35rem;
+    }
+    h1 {
+      font-size: clamp(1.75rem, 4vw, 2.35rem);
+      font-weight: 600;
+      line-height: 1.2;
+      margin: 0 0 0.75rem;
+      letter-spacing: -0.02em;
+    }
+    .lede {
+      font-size: 1.15rem;
+      color: var(--muted);
+      margin: 0 0 1.5rem;
+      max-width: 36rem;
+    }
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1.25rem;
+      font-size: 0.9rem;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+    }
+    nav a {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+    }
+    nav a:hover { border-bottom-color: var(--accent); }
+
+    section {
+      padding-top: 2.75rem;
+    }
+    h2 {
+      font-size: 1.35rem;
+      font-weight: 600;
+      margin: 0 0 0.75rem;
+      letter-spacing: -0.015em;
+    }
+    h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin: 1.5rem 0 0.5rem;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+    }
+    p { margin: 0 0 1rem; color: var(--muted); }
+    p strong { color: var(--fg); }
+
+    ul {
+      margin: 0 0 1rem;
+      padding-left: 1.25rem;
+      color: var(--muted);
+    }
+    li { margin-bottom: 0.4rem; }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem 1.35rem;
+      margin: 1.25rem 0;
+    }
+    .card h3:first-child { margin-top: 0; }
+
+    .diagram {
+      margin: 1.5rem 0;
+      padding: 1rem 1rem 0.5rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow-x: auto;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+    }
+    .diagram figcaption {
+      font-size: 0.85rem;
+      color: var(--muted);
+      padding: 0.75rem 0.25rem 0.5rem;
+      border-top: 1px solid var(--border);
+      margin-top: 0.5rem;
+    }
+
+    .cta {
+      margin-top: 0.5rem;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      font-size: 0.95rem;
+    }
+    .cta a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .cta a:hover { text-decoration: underline; }
+
+    footer {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
+      font-family: ui-sans-serif, system-ui, sans-serif;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    .pill {
+      display: inline-block;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
   </style>
 </head>
 <body>
+  <header class="wrap">
+    <p class="brand">Inquiry Institute · Atlas</p>
+    <h1>Learning evidence that travels with you</h1>
+    <p class="lede">
+      Castalia uses <strong>xAPI</strong> not as a bolt-on, but as the backbone for inquiry—
+      from notebooks and cards to field labs—so progress, evidence, and credentials stay consistent in the cloud and on the <strong>Inquiry Appliance</strong>.
+    </p>
+    <nav aria-label="Page sections">
+      <a href="#why">Why xAPI</a>
+      <a href="#appliance">Inquiry Appliance</a>
+      <a href="#flows">How it works</a>
+      <a href="#spec">Specification</a>
+    </nav>
+  </header>
+
   <main>
-    <h1>xAPI</h1>
-    <p>GitHub Pages site for the Inquiry Institute.</p>
+    <section id="why" class="wrap">
+      <span class="pill">For Atlas</span>
+      <h2>Why xAPI matters here</h2>
+      <p>
+        Atlas orchestrates modules, assessments, and inquiry threads—across campus and in the field.
+        xAPI gives you a <strong>standard, append-only record</strong> of what happened: who did what, with which activities, in what context.
+        That record is what feeds dashboards, research, and defensible credentials—not a vendor’s proprietary gradebook.
+      </p>
+      <ul>
+        <li><strong>Interoperable</strong> — statements can move between systems without losing meaning.</li>
+        <li><strong>Evidence-rich</strong> — verbs, activities, and extensions carry inquiry semantics, not just scores.</li>
+        <li><strong>Future-proof</strong> — issue badges, verifiable credentials, and analytics from the same evidence stream.</li>
+      </ul>
+    </section>
+
+    <section id="appliance" class="wrap">
+      <span class="pill">Local-first</span>
+      <h2>The Inquiry Appliance</h2>
+      <p>
+        Not every lab or cohort has reliable connectivity. The <strong>Inquiry Appliance</strong> is a Castalia node:
+        a local LRS, event gateway, and sync layer that captures learning events the same way the cloud does—so
+        <strong>notebooks, cards, and devices</strong> keep working offline, then reconcile when policy allows.
+      </p>
+      <div class="card">
+        <h3>What you get on the appliance</h3>
+        <ul>
+          <li><strong>Same xAPI surface</strong> as cloud — <code>…/xAPI/statements</code>, identical semantics.</li>
+          <li><strong>Registered events only</strong> — no semantic drift; every emission maps through the gateway registry.</li>
+          <li><strong>Selective sync</strong> — full evidence, credential-only, or summary modes per trust and privacy rules.</li>
+          <li><strong>Durable capture</strong> — append-only log; dedupe by statement id when sync catches up.</li>
+        </ul>
+      </div>
+      <p>
+        Atlas markets this as <strong>inquiry without apology</strong>: rigorous evidence when you’re online, and
+        the same rigor when you’re not—without two different products.
+      </p>
+    </section>
+
+    <section id="flows" class="wrap-wide">
+      <section id="diagrams">
+        <span class="pill">Architecture</span>
+        <h2>How it flows</h2>
+        <p class="wrap" style="padding-left: 0; max-width: 40rem;">
+          Three sequences: <strong>ingress</strong> (apps → gateway → LRS), <strong>appliance</strong> (offline capture + sync),
+          and <strong>credentials</strong> (read models → evidence → issuance). Diagrams render below; Mermaid runs in your browser.
+        </p>
+
+        <figure class="diagram">
+          <pre class="mermaid">
+sequenceDiagram
+  autonumber
+  participant App as Atlas / iNQspace
+  participant GW as Castalia Gateway
+  participant LRS as LRS
+  App->>GW: Domain event (registry)
+  GW->>GW: Validate schema + idempotency
+  GW->>LRS: xAPI statement
+  LRS-->>GW: 204 No Content
+  GW-->>App: Ack (event_id)
+          </pre>
+          <figcaption>All writes go through the gateway—validation, mapping, and dedupe before the LRS.</figcaption>
+        </figure>
+
+        <figure class="diagram">
+          <pre class="mermaid">
+sequenceDiagram
+  autonumber
+  participant L as Learner
+  participant N as Inquiry Appliance
+  participant C as Cloud LRS
+  L->>N: Learn (offline OK)
+  N->>N: Append to local LRS
+  Note over N: Policy: sync when online
+  N->>C: Batch statements (dedupe)
+  C-->>N: Accepted
+          </pre>
+          <figcaption>Local-first capture with the same statement model; sync is explicit and batched.</figcaption>
+        </figure>
+
+        <figure class="diagram">
+          <pre class="mermaid">
+sequenceDiagram
+  autonumber
+  participant LRS as LRS
+  participant RM as Read models
+  participant CE as Credential engine
+  participant I as Issuer
+  LRS-->>RM: Project / stream
+  RM->>CE: Evidence state
+  CE->>CE: Declarative rules (versioned)
+  CE->>I: Eligibility + bundle
+  I-->>CE: OB / VC artifact
+          </pre>
+          <figcaption>Product UX and credentials use read models—not ad hoc LRS queries on every page load.</figcaption>
+        </figure>
+      </section>
+    </section>
+
+    <section id="spec" class="wrap">
+      <span class="pill">Build on it</span>
+      <h2>Specification and registry</h2>
+      <p>
+        The system specification, event registry, and mapping rules live in the open repo—so Atlas, iNQspace, and
+        the appliance can align on one vocabulary.
+      </p>
+      <p class="cta">
+        <a href="https://github.com/InquiryInstitute/xapi/blob/main/docs/CASTALIA_XAPI_SYSTEM_SPEC_v0.1.md">Castalia xAPI System Specification v0.1</a>
+        ·
+        <a href="https://github.com/InquiryInstitute/xapi/blob/main/docs/event-registry/v1/registry.json">Event registry (JSON)</a>
+        ·
+        <a href="https://github.com/InquiryInstitute/xapi">GitHub</a>
+      </p>
+    </section>
   </main>
+
+  <footer class="wrap">
+    <p>
+      <a href="https://xapi.castalia.institute/">xapi.castalia.institute</a> ·
+      Inquiry Institute · Castalia learning evidence
+    </p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js" crossorigin="anonymous"></script>
+  <script>
+    (function () {
+      var dark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: dark ? "dark" : "neutral",
+        securityLevel: "strict",
+        fontFamily: "ui-sans-serif, system-ui, sans-serif",
+      });
+    })();
+  </script>
 </body>
 </html>
